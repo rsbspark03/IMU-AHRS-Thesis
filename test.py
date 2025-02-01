@@ -90,6 +90,10 @@ def update_orientation(q, omega_meas, bias, dt):
     q_new = delta_q * q
     # Normalize to ensure the quaternion remains a unit quaternion.
     q_new = q_new.normalized()
+    
+    if np.dot(quaternion.as_float_array(q), quaternion.as_float_array(q_new)) < 0:
+        q_new = -q_new  # Flip the quaternion if needed
+
     return q_new
 
 def plot_update():
