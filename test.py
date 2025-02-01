@@ -2,6 +2,8 @@ import time
 import numpy as np
 import quaternion
 from collections import deque
+import matplotlib.pyplot as plt
+
 
 def parse_latest_orientation(log_file):
     try:
@@ -90,6 +92,44 @@ def update_orientation(q, omega_meas, bias, dt):
     q_new = q_new.normalized()
     return q_new
 
+def plot_update():
+    # --- UPDATE THE LIVE PLOT ---
+        # Clear the axes so we can redraw the coordinate frame:
+        ax.cla()
+        ax.set_xlim([-1.5, 1.5])
+        ax.set_ylim([-1.5, 1.5])
+        ax.set_zlim([-1.5, 1.5])
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+        ax.set_title('Live Orientation')
+
+        # Convert the updated quaternion to a rotation matrix.
+        # Using numpy-quaternion's helper function:
+        rot_matrix = quaternion.as_rotation_matrix(q)
+
+        # Rotate the coordinate axes:
+        x_rot = rot_matrix @ x_axis
+        y_rot = rot_matrix @ y_axis
+        z_rot = rot_matrix @ z_axis
+
+        # Plot arrows for each axis starting from the origin:
+        origin = np.array([0, 0, 0])
+        ax.quiver(origin[0], origin[1], origin[2],
+                  x_rot[0], x_rot[1], x_rot[2],
+                  color='r', length=1.0, normalize=True, label='X')
+        ax.quiver(origin[0], origin[1], origin[2],
+                  y_rot[0], y_rot[1], y_rot[2],
+                  color='g', length=1.0, normalize=True, label='Y')
+        ax.quiver(origin[0], origin[1], origin[2],
+                  z_rot[0], z_rot[1], z_rot[2],
+                  color='b', length=1.0, normalize=True, label='Z')
+
+        # Optionally, add a legend (this might slow down the update if overdone)
+        # ax.legend()
+
+        plt.draw()
+        plt.pause(0.001)  # A very short pause to allow the figure to update
 
 # Initial orientation: identity quaternion (no rotation)
 q = np.quaternion(1.0, 0.0, 0.0, 0.0)
@@ -100,6 +140,27 @@ bias = np.array([0.0, 0.0, 0.0])
 log_file = "putty.log"
 queue = deque(maxlen=2)  # Create a deque that stores only the last 2 values
 np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
+
+# --- SET UP LIVE 3D PLOT ---
+plt.ion()  # Turn on interactive mode
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.set_xlim([-1.5, 1.5])
+ax.set_ylim([-1.5, 1.5])
+ax.set_zlim([-1.5, 1.5])
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title('Live Orientation')
+
+# Define the original coordinate axes (unit vectors)
+x_axis = np.array([1, 0, 0])
+y_axis = np.array([0, 1, 0])
+z_axis = np.array([0, 0, 1])
+
+# Initially plot the coordinate frame (we'll update it later)
+q_obj = quaternion.as_float_array(q)
+print("Initial Quaternion:", q_obj)
 
 while True:
     data = parse_latest_orientation(log_file)
@@ -114,6 +175,7 @@ while True:
     
         # Print the updated quaternion.
         print("Quat:", quaternion.as_float_array(q))
+
 
 
     else:
