@@ -183,5 +183,5 @@ while True:
         # print("Waiting for valid data...")  # Prevent unnecessary error messages
         continue
 
-    time.sleep(0.1)
+    time.sleep(0.02)
 
