@@ -93,43 +93,43 @@ def update_orientation(q, omega_meas, bias, dt):
     return q_new
 
 def plot_update():
-    # --- UPDATE THE LIVE PLOT ---
-        # Clear the axes so we can redraw the coordinate frame:
-        ax.cla()
-        ax.set_xlim([-1.5, 1.5])
-        ax.set_ylim([-1.5, 1.5])
-        ax.set_zlim([-1.5, 1.5])
-        ax.set_xlabel('X')
-        ax.set_ylabel('Y')
-        ax.set_zlabel('Z')
-        ax.set_title('Live Orientation')
+# --- UPDATE THE LIVE PLOT ---
+    # Clear the axes so we can redraw the coordinate frame:
+    ax.cla()
+    ax.set_xlim([-1.5, 1.5])
+    ax.set_ylim([-1.5, 1.5])
+    ax.set_zlim([-1.5, 1.5])
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    ax.set_title('Live Orientation')
 
-        # Convert the updated quaternion to a rotation matrix.
-        # Using numpy-quaternion's helper function:
-        rot_matrix = quaternion.as_rotation_matrix(q)
+    # Convert the updated quaternion to a rotation matrix.
+    # Using numpy-quaternion's helper function:
+    rot_matrix = quaternion.as_rotation_matrix(q)
 
-        # Rotate the coordinate axes:
-        x_rot = rot_matrix @ x_axis
-        y_rot = rot_matrix @ y_axis
-        z_rot = rot_matrix @ z_axis
+    # Rotate the coordinate axes:
+    x_rot = rot_matrix @ x_axis
+    y_rot = rot_matrix @ y_axis
+    z_rot = rot_matrix @ z_axis
 
-        # Plot arrows for each axis starting from the origin:
-        origin = np.array([0, 0, 0])
-        ax.quiver(origin[0], origin[1], origin[2],
-                  x_rot[0], x_rot[1], x_rot[2],
-                  color='r', length=1.0, normalize=True, label='X')
-        ax.quiver(origin[0], origin[1], origin[2],
-                  y_rot[0], y_rot[1], y_rot[2],
-                  color='g', length=1.0, normalize=True, label='Y')
-        ax.quiver(origin[0], origin[1], origin[2],
-                  z_rot[0], z_rot[1], z_rot[2],
-                  color='b', length=1.0, normalize=True, label='Z')
+    # Plot arrows for each axis starting from the origin:
+    origin = np.array([0, 0, 0])
+    ax.quiver(origin[0], origin[1], origin[2],
+                x_rot[0], x_rot[1], x_rot[2],
+                color='r', length=1.0, normalize=True, label='X')
+    ax.quiver(origin[0], origin[1], origin[2],
+                y_rot[0], y_rot[1], y_rot[2],
+                color='g', length=1.0, normalize=True, label='Y')
+    ax.quiver(origin[0], origin[1], origin[2],
+                z_rot[0], z_rot[1], z_rot[2],
+                color='b', length=1.0, normalize=True, label='Z')
 
-        # Optionally, add a legend (this might slow down the update if overdone)
-        # ax.legend()
+    # Optionally, add a legend (this might slow down the update if overdone)
+    # ax.legend()
 
-        plt.draw()
-        plt.pause(0.001)  # A very short pause to allow the figure to update
+    plt.draw()
+    plt.pause(0.001)  # A very short pause to allow the figure to update
 
 # Initial orientation: identity quaternion (no rotation)
 q = np.quaternion(1.0, 0.0, 0.0, 0.0)
@@ -170,17 +170,18 @@ while True:
             continue
 
         dt = (queue[-1][-1] - queue[-2][-1])/1000
-        omega_meas = queue[-1][0:3]
+        omega_meas_deg = queue[-1][0:3]
+        omega_meas = np.array(omega_meas_deg) * (np.pi / 180)  # Convert to rad/s
         q = update_orientation(q, omega_meas, bias, dt)
     
         # Print the updated quaternion.
         print("Quat:", quaternion.as_float_array(q))
-
+        plot_update()
 
 
     else:
         # print("Waiting for valid data...")  # Prevent unnecessary error messages
         continue
 
-    time.sleep(0.02)
+    time.sleep(0.1)
 
