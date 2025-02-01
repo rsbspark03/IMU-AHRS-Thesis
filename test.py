@@ -113,16 +113,9 @@ while True:
         q = update_orientation(q, omega_meas, bias, dt)
     
         # Print the updated quaternion.
-        # print("Updated quaternion:", q)
-        # If you prefer a NumPy array representation:
         print("Quat:", quaternion.as_float_array(q))
 
-        # print(f"Queue: {list(queue)}")  # Convert to list for printing
-        # print(f"Latest Data: {queue[-1]}")  # Most recent entry
-        # if len(queue) > 1:
-        #     print(f"Previous Data: {queue[-2]}")  # Second most recent entry
-        # orientation(data[3:6], data[0:3])
-        
+
     else:
         # print("Waiting for valid data...")  # Prevent unnecessary error messages
         continue
