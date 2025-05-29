@@ -50,10 +50,10 @@ TODO:
 
 Author:
 
-Ruchir Sinh Bais
-Undergraduate Mechatronics Engineering Student, University of Sydney
-LinkedIn: https://www.linkedin.com/in/ruchirsbais2023/
-Email: ruchirsbais@gmail.com
+Ruchir Sinh Bais\
+Undergraduate Mechatronics Engineering Student, University of Sydney\
+LinkedIn: https://www.linkedin.com/in/ruchirsbais2023/ \
+Email: ruchirsbais@gmail.com\
 
 License:
 
