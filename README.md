@@ -1,4 +1,4 @@
-Quaternion-Based Orientation Estimation for Human Pose Tracking Using EKF and IMU Sensors
+# Quaternion-Based Orientation Estimation for Human Pose Tracking Using EKF and IMU Sensors
 
 This repository contains the full implementation of an Extended Kalman Filter (EKF) for estimating 3D orientation using a 9-DOF inertial measurement unit (IMU) that includes an accelerometer, gyroscope, and magnetometer. The project is targeted at human body pose estimation applications and is built using:
 
@@ -7,7 +7,7 @@ This repository contains the full implementation of an Extended Kalman Filter (E
 - C++ (Arduino Framework) for microcontroller firmware
 - BNO055 Bosch IMU
 
-Project Structure:
+## Project Structure:
 
 EKF-AHRS/
 ├── arduino/
@@ -15,7 +15,7 @@ EKF-AHRS/
 ├── log_data/
 └── README.md
 
-Features:
+## Features:
 
 - Extended Kalman Filter for 3D orientation (quaternion-based)
 - Wahba’s problem used for initial quaternion estimation
@@ -25,14 +25,14 @@ Features:
 - Offline logging, playback, and analysis
 - Time-series plots for debugging and evaluation
 
-Setup Instructions:
+## Setup Instructions:
 
-1. Arduino Setup
+### 1. Arduino Setup
 - Open arduino/imu_logger.ino in the Arduino IDE.
 - Select the correct board and port for your Arduino Mega.
 - Upload the firmware.
 
-2. Python Environment
+### 2. Python Environment
 
 git clone https://github.com/your-username/EKF-AHRS.git
 cd EKF-AHRS
@@ -47,7 +47,7 @@ Dependencies include:
 - pyserial
 - pandas
 
-3. Run the EKF
+### 3. Run the EKF
 
 Connect the Arduino, then:
 
@@ -64,33 +64,29 @@ The plot_results.py script produces plots of:
 - Euler angles for interpretability
 - Orientation error vs ground truth (if available)
 
-EKF Overview:
+## EKF Overview:
 
-The system state is represented by a 7D vector:
-x = [ q, b_g ]
+The system state is represented by a 4D vector:
+x = [q]
 where:
 - q is the orientation quaternion
-- b_g is the gyroscope bias
 
 The filter fuses data at each time step using prediction and update steps based on the IMU measurements. Wahba's problem is solved to initialize the quaternion using gravity and magnetic vectors.
 
-Documentation:
-
-- See notebooks/analysis.ipynb for detailed explanations and plots.
-- Inline comments in ekf.py and filters.py explain the mathematical models.
 
 TODO:
 
 - Add magnetometer calibration routine
+- Add gyroscope bias state
 - Improve real-time visualization
 - Integrate with human pose estimation framework (e.g., OpenPose)
 
 Author:
 
-[Your Name]
+Ruchir Sinh Bais
 Undergraduate Mechatronics Engineering Student, University of Sydney
-LinkedIn: https://linkedin.com/in/your-profile
-Email: your@email.com
+LinkedIn: https://www.linkedin.com/in/ruchirsbais2023/
+Email: ruchirsbais@gmail.com
 
 License:
 
