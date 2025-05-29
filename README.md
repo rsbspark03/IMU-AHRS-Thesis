@@ -10,10 +10,10 @@ This repository contains the full implementation of an Extended Kalman Filter (E
 ## Project Structure:
 
 EKF-AHRS/
-├── arduino/
-├── MyEKF/
-├── log_data/
-└── README.md
+- arduino/
+- MyEKF/
+- log_data/
+- README.md
 
 ## Features:
 
