@@ -25,44 +25,11 @@ EKF-AHRS/
 - Offline logging, playback, and analysis
 - Time-series plots for debugging and evaluation
 
-## Setup Instructions:
-
-### 1. Arduino Setup
-- Open arduino/imu_logger.ino in the Arduino IDE.
-- Select the correct board and port for your Arduino Mega.
-- Upload the firmware.
-
-### 2. Python Environment
-
-git clone https://github.com/your-username/EKF-AHRS.git
-cd EKF-AHRS
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\\Scripts\\activate
-pip install -r requirements.txt
-
-Dependencies include:
+## Dependencies include:
 - numpy
 - scipy
 - matplotlib
-- pyserial
-- pandas
 
-### 3. Run the EKF
-
-Connect the Arduino, then:
-
-python src/ekf.py --port COM3  # Replace COM3 with your serial port
-
-For offline analysis:
-
-python src/plot_results.py --file data/recorded_data.csv
-
-Visualization:
-
-The plot_results.py script produces plots of:
-- Quaternion components over time
-- Euler angles for interpretability
-- Orientation error vs ground truth (if available)
 
 ## EKF Overview:
 
